@@ -428,6 +428,8 @@ public class RangeSeekBar extends View {
                     callback.onRangeChanged(this, result[0], result[1]);
                 }
                 break;
+            default:
+                break;
         }
         return super.onTouchEvent(event);
     }

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -14,13 +15,13 @@ import android.view.View;
  */
 
 public class MileageSelector extends View {
-    private int sCircleRadius = 11;
+    private int sCircleRadius = 30;
     private int bCircleRadius = 44;
     private int width;
     private int height;
     private Paint whitePaint;
     private Paint whiteCirclePaint, bluePaint, redPaint, blackPaint;
-    private int mileageValue = 3;
+    private int mileageValue = 2;
 
     public MileageSelector(Context context) {
         this(context, null);
@@ -72,44 +73,49 @@ public class MileageSelector extends View {
         super.onDraw(canvas);
         canvas.drawRect(sCircleRadius, height / 2 - 12, width * mileageValue / 5, height / 2 + 10, whitePaint);
         canvas.drawRect(width * mileageValue / 5, height / 2 - 12, width - sCircleRadius, height / 2 + 12, bluePaint);
-        switch (mileageValue) {
-            case 0:
 
-                break;
-            case 1:
+        for (int i = 0; i < 6; i++) {
+            if (i <= mileageValue) {
+                if (i == 0) {
+                    canvas.drawCircle(sCircleRadius + width * i / 5, height / 2, sCircleRadius, whitePaint);
+                } else {
+                    canvas.drawCircle(width * i / 5, height / 2, sCircleRadius, whitePaint);
+                }
 
-                break;
-            case 2:
-
-                break;
-            case 3:
-
-                break;
-            case 4:
-
-                break;
-            default:
-                break;
-
+            } else {
+                if (i == 5) {
+                    canvas.drawCircle(width * i / 5 - sCircleRadius, height / 2, sCircleRadius, bluePaint);
+                } else {
+                    canvas.drawCircle(width * i / 5, height / 2, sCircleRadius, bluePaint);
+                }
+            }
         }
-        canvas.drawCircle(sCircleRadius, height / 2, sCircleRadius, whitePaint);
-        canvas.drawCircle(width / 5, height / 2, 22, whitePaint);
-        canvas.drawCircle(width * 2 / 5, height / 2, 22, whitePaint);
-
         canvas.drawCircle(width * 2 / 5, height / 2, 44, redPaint);
         canvas.drawLine(width * 2 / 5 + 10, height / 2 - 10, width * 2 / 5 + 10, height / 2 + 10, blackPaint);
         canvas.drawLine(width * 2 / 5 + 20, height / 2 - 10, width * 2 / 5 + 20, height / 2 + 10, blackPaint);
         canvas.drawLine(width * 2 / 5 + 30, height / 2 - 10, width * 2 / 5 + 30, height / 2 + 10, blackPaint);
+    }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
 
-        canvas.drawCircle(width * 3 / 5, height / 2, 22, bluePaint);
-        canvas.drawCircle(width * 4 / 5, height / 2, 22, bluePaint);
-        canvas.drawCircle(width - 22, height / 2, 22, bluePaint);
-        //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.timg);
-        //canvas.drawBitmap(bitmap, 100, 100, whitePaint);
+                break;
+            case MotionEvent.ACTION_MOVE:
+
+                break;
+            case MotionEvent.ACTION_UP:
+
+                break;
+            default:
+                break;
+        }
+        return super.onTouchEvent(event);
     }
 
     public void setMileageValue(int mileageValue) {
         this.mileageValue = mileageValue / 2 - 1;
+        invalidate();
     }
 }

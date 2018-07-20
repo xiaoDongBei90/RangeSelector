@@ -10,6 +10,7 @@
     tools:context="com.lxw.mileageselector.MainActivity">
 
     <com.lxw.mileageselector.MileageSelector
+        android:id="@+id/ms"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:layout_marginLeft="15dp"
@@ -20,4 +21,11 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="50dp"/>
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="就算"/>
 </LinearLayout>

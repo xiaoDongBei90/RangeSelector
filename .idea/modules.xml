@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MileageSelector.iml" filepath="$PROJECT_DIR$/MileageSelector.iml" />
+      <module fileurl="file://D:\Test\RangeSelector\MileageSelector.iml" filepath="D:\Test\RangeSelector\MileageSelector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RangeSelector.iml" filepath="$PROJECT_DIR$/RangeSelector.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
