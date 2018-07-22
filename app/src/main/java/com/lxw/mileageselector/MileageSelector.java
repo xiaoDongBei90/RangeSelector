@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,7 +17,8 @@ import android.view.View;
 
 public class MileageSelector extends View {
     private int sCircleRadius = 30;
-    private int bCircleRadius = 44;
+    private int bCircleRadius = ToolUtil.dp2px(11);
+    private int lineHeight = ToolUtil.dp2px(6);
     private int width;
     private int height;
     private Paint whitePaint;
@@ -71,47 +73,72 @@ public class MileageSelector extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRect(sCircleRadius, height / 2 - 12, width * mileageValue / 5, height / 2 + 10, whitePaint);
-        canvas.drawRect(width * mileageValue / 5, height / 2 - 12, width - sCircleRadius, height / 2 + 12, bluePaint);
-
+        canvas.drawRect(bCircleRadius, height / 2 - lineHeight/2, width * mileageValue / 5, height / 2 + lineHeight/2, whitePaint);
+        canvas.drawRect(width * mileageValue / 5, height / 2 - lineHeight/2, width - bCircleRadius, height / 2 + lineHeight/2, bluePaint);
         for (int i = 0; i < 6; i++) {
             if (i <= mileageValue) {
                 if (i == 0) {
-                    canvas.drawCircle(sCircleRadius + width * i / 5, height / 2, sCircleRadius, whitePaint);
+                    canvas.drawCircle(width * i / 5 + bCircleRadius, height / 2, sCircleRadius, whitePaint);
                 } else {
                     canvas.drawCircle(width * i / 5, height / 2, sCircleRadius, whitePaint);
                 }
 
             } else {
                 if (i == 5) {
-                    canvas.drawCircle(width * i / 5 - sCircleRadius, height / 2, sCircleRadius, bluePaint);
+                    canvas.drawCircle(width * i / 5 - bCircleRadius, height / 2, sCircleRadius, bluePaint);
                 } else {
                     canvas.drawCircle(width * i / 5, height / 2, sCircleRadius, bluePaint);
                 }
             }
         }
-        canvas.drawCircle(width * 2 / 5, height / 2, 44, redPaint);
-        canvas.drawLine(width * 2 / 5 + 10, height / 2 - 10, width * 2 / 5 + 10, height / 2 + 10, blackPaint);
-        canvas.drawLine(width * 2 / 5 + 20, height / 2 - 10, width * 2 / 5 + 20, height / 2 + 10, blackPaint);
-        canvas.drawLine(width * 2 / 5 + 30, height / 2 - 10, width * 2 / 5 + 30, height / 2 + 10, blackPaint);
+        if (mileageValue == 0) {
+            canvas.drawCircle(width * mileageValue / 5 + bCircleRadius, height / 2, bCircleRadius, redPaint);
+        } else if (mileageValue == 5) {
+            canvas.drawCircle(width * mileageValue / 5 - bCircleRadius, height / 2, bCircleRadius, redPaint);
+        } else {
+            canvas.drawCircle(width * mileageValue / 5, height / 2, bCircleRadius, redPaint);
+        }
+        //        canvas.drawLine(width * 2 / 5 + 10, height / 2 - 10, width * 2 / 5 + 10, height / 2 + 10, blackPaint);
+        //        canvas.drawLine(width * 2 / 5 + 20, height / 2 - 10, width * 2 / 5 + 20, height / 2 + 10, blackPaint);
+        //        canvas.drawLine(width * 2 / 5 + 30, height / 2 - 10, width * 2 / 5 + 30, height / 2 + 10, blackPaint);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-
+                Log.d("location", String.format("%s----DOWN-----%s", event.getX(), event.getY()));
+                Log.d("location", String.format("%s----width-----s", width));
                 break;
             case MotionEvent.ACTION_MOVE:
-
+                moveMileage(event.getX());
+                Log.d("location", String.format("%s----MOVE-----%s", event.getX(), event.getY()));
                 break;
             case MotionEvent.ACTION_UP:
-
+                moveMileage(event.getX());
+                Log.d("location", String.format("%s-----UP----%s", event.getX(), event.getY()));
                 break;
             default:
                 break;
         }
-        return super.onTouchEvent(event);
+        invalidate();
+        return true;
+    }
+
+    private void moveMileage(float x) {
+        if (x < width / 10) {
+            mileageValue = 0;
+        } else if (x >= width / 10 && x < width * 3 / 10) {
+            mileageValue = 1;
+        } else if (x >= width * 3 / 10 && x < width * 5 / 10) {
+            mileageValue = 2;
+        } else if (x >= width * 5 / 10 && x < width * 7 / 10) {
+            mileageValue = 3;
+        } else if (x >= width * 7 / 10 && x < width * 9 / 10) {
+            mileageValue = 4;
+        } else if (x >= width * 9 / 10) {
+            mileageValue = 5;
+        }
     }
 
     public void setMileageValue(int mileageValue) {
